@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- School Building -->
+  <rect x="200" y="200" width="400" height="300" fill="#A8A5F0" rx="20"/>
+  <rect x="220" y="220" width="360" height="260" fill="#6C5CE7" rx="16"/>
+  
+  <!-- Windows -->
+  <rect x="260" y="260" width="80" height="80" fill="#F8F9FD" rx="8"/>
+  <rect x="360" y="260" width="80" height="80" fill="#F8F9FD" rx="8"/>
+  <rect x="460" y="260" width="80" height="80" fill="#F8F9FD" rx="8"/>
+  
+  <rect x="260" y="360" width="80" height="80" fill="#F8F9FD" rx="8"/>
+  <rect x="360" y="360" width="80" height="80" fill="#F8F9FD" rx="8"/>
+  <rect x="460" y="360" width="80" height="80" fill="#F8F9FD" rx="8"/>
+  
+  <!-- Door -->
+  <rect x="360" y="440" width="80" height="120" fill="#4834D4" rx="8"/>
+  <rect x="370" y="450" width="60" height="100" fill="#F8F9FD" rx="6"/>
+  
+  <!-- Roof -->
+  <path d="M150 200L400 50L650 200H150Z" fill="#4834D4"/>
+  
+  <!-- Flag -->
+  <rect x="390" y="30" width="4" height="60" fill="#4834D4"/>
+  <path d="M394 30L424 45L394 60V30Z" fill="#FF6B6B"/>
+  
+  <!-- Trees -->
+  <circle cx="150" y="450" r="40" fill="#51CF66"/>
+  <rect x="145" y="450" width="10" height="50" fill="#40C057"/>
+  
+  <circle cx="650" y="450" r="40" fill="#51CF66"/>
+  <rect x="645" y="450" width="10" height="50" fill="#40C057"/>
+  
+  <!-- Sun -->
+  <circle cx="700" y="100" r="40" fill="#FFD43B"/>
+  
+  <!-- Clouds -->
+  <circle cx="200" y="100" r="30" fill="#F8F9FD"/>
+  <circle cx="230" y="100" r="25" fill="#F8F9FD"/>
+  <circle cx="260" y="100" r="30" fill="#F8F9FD"/>
+  
+  <circle cx="500" y="150" r="25" fill="#F8F9FD"/>
+  <circle cx="530" y="150" r="20" fill="#F8F9FD"/>
+  <circle cx="560" y="150" r="25" fill="#F8F9FD"/>
+</svg>

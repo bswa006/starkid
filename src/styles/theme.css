@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base Colors */
+    --primary: 108, 92, 231;
+    --primary-hover: 90, 75, 212;
+    --primary-pressed: 72, 52, 212;
+    --primary-light: 168, 165, 240;
+    --primary-dark: 72, 52, 212;
+
+    --secondary: 255, 107, 107;
+    --secondary-hover: 255, 82, 82;
+    --secondary-pressed: 255, 73, 73;
+
+    --accent: 81, 207, 102;
+    --accent-hover: 71, 195, 92;
+    --accent-pressed: 64, 192, 87;
+
+    /* Semantic Colors */
+    --success: 81, 207, 102;
+    --success-hover: 71, 195, 92;
+    --success-pressed: 64, 192, 87;
+
+    --warning: 255, 212, 59;
+    --warning-hover: 252, 196, 25;
+    --warning-pressed: 250, 176, 5;
+
+    --error: 255, 107, 107;
+    --error-hover: 255, 82, 82;
+    --error-pressed: 255, 73, 73;
+
+    /* UI Colors */
+    --background: 248, 249, 253;
+    --background-secondary: 241, 245, 249;
+    
+    --surface: 255, 255, 255;
+    --surface-hover: 248, 250, 252;
+    --surface-pressed: 241, 245, 249;
+
+    --border: 226, 232, 240;
+    --border-hover: 203, 213, 225;
+
+    /* Typography */
+    --text-primary: 26, 28, 30;
+    --text-secondary: 74, 85, 104;
+    --text-tertiary: 113, 128, 150;
+    --text-brand: var(--primary);
+
+    /* Effects */
+    --shadow-color: 220 3% 15%;
+    --shadow-strength: 1%;
+  }
+
+  .dark {
+    /* Base Colors */
+    --primary: #8B85F5;
+    --primary-hover: #7A73F4;
+    --primary-pressed: #6C5CE7;
+    --primary-light: #A8A5F0;
+    --primary-dark: #4834D4;
+
+    --secondary: #FF8585;
+    --secondary-hover: #FF7070;
+    --secondary-pressed: #FF6B6B;
+
+    --accent: #69DB7E;
+    --accent-hover: #5FD174;
+    --accent-pressed: #51CF66;
+
+    /* Semantic Colors */
+    --success: #69DB7E;
+    --success-hover: #5FD174;
+    --success-pressed: #51CF66;
+
+    --warning: #FFE066;
+    --warning-hover: #FFD43B;
+    --warning-pressed: #FCC419;
+
+    --error: #FF8585;
+    --error-hover: #FF7070;
+    --error-pressed: #FF6B6B;
+
+    /* UI Colors */
+    --background: #121212;
+    --background-secondary: #1E1E1E;
+
+    --surface: #242424;
+    --surface-hover: #2A2A2A;
+    --surface-pressed: #303030;
+
+    --border: #404040;
+    --border-hover: #4A4A4A;
+
+    /* Typography */
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0A0A0;
+    --text-tertiary: #6B7280;
+    --text-brand: var(--primary);
+
+    /* Effects */
+    --shadow-color: 0 0% 0%;
+    --shadow-strength: 5%;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-hover focus:ring-primary/20;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-hover focus:ring-secondary/20;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-white hover:bg-accent-hover focus:ring-accent/20;
+  }
+
+  .card {
+    @apply rounded-xl bg-surface p-4 shadow-sm transition-shadow hover:shadow-md;
+  }
+
+  .input {
+    @apply h-12 w-full rounded-xl border border-border bg-surface px-4 text-text-primary placeholder-text-tertiary transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary/10 text-secondary;
+  }
+
+  .badge-accent {
+    @apply bg-accent/10 text-accent;
+  }
+
+  .badge-success {
+    @apply bg-success/10 text-success;
+  }
+
+  .badge-warning {
+    @apply bg-warning/10 text-warning;
+  }
+
+  .badge-error {
+    @apply bg-error/10 text-error;
+  }
+}
