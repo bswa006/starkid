@@ -1,23 +1,26 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
-import { getAnalytics } from 'firebase/analytics';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyCWM0RegXLpneAx658221-Ijjice3DFxHo",
+  authDomain: "starkid-397f2.firebaseapp.com",
+  projectId: "starkid-397f2",
+  storageBucket: "starkid-397f2.appspot.com",
+  messagingSenderId: "172299862492",
+  appId: "1:172299862492:web:f70038be5ca59ba6b5cf19"
 };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+
+// Initialize Firestore with specific settings
 export const db = getFirestore(app);
-export const storage = getStorage(app);
-export const analytics = getAnalytics(app);
+
+// Always use emulator in development
+if (process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost') {
+  console.log('Using Firestore emulator');
+  connectFirestoreEmulator(db, 'localhost', 8080);
+}
 
 export default app;

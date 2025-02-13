@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple star shape -->
+  <path
+    d="M256 96l48 144h144l-120 96 48 144-120-96-120 96 48-144-120-96h144l48-144z"
+    fill="#6B7FE3"
+    fill-opacity="0.9"
+  />
+  <!-- Subtle glow effect -->
+  <path
+    d="M256 136l36 108h108l-90 72 36 108-90-72-90 72 36-108-90-72h108l36-108z"
+    fill="white"
+    fill-opacity="0.4"
+  />
+</svg>

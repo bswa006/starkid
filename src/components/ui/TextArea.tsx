@@ -1,16 +1,16 @@
-import { InputHTMLAttributes, forwardRef } from 'react';
+import { TextareaHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import type { LucideIcon } from 'lucide-react';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: string | boolean;
   icon?: LucideIcon;
   label?: string;
   helperText?: string;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, error, type, icon: Icon, label, helperText, ...props }, ref) => {
+const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  ({ className, error, icon: Icon, label, helperText, ...props }, ref) => {
     return (
       <div className="w-full">
         {label && (
@@ -20,12 +20,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative">
           {Icon && (
-            <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-secondary" />
+            <Icon className="absolute left-3 top-4 h-5 w-5 text-text-secondary" />
           )}
-          <input
-            type={type}
+          <textarea
             className={cn(
-              'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary',
+              'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary min-h-[100px]',
               Icon && 'pl-10',
               error && 'border-red-500 focus:ring-red-500',
               className
@@ -44,6 +43,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-Input.displayName = 'Input';
 
-export { Input };
+TextArea.displayName = 'TextArea';
+
+export { TextArea };

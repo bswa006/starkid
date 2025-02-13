@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  signInAnonymously,
   User,
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
@@ -48,8 +49,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setLoading(false);
+      if (user) {
+        setCurrentUser(user);
+        setLoading(false);
+      } else {
+        // Sign in anonymously if no user is present
+        signInAnonymously(auth)
+          .then(userCredential => {
+            setCurrentUser(userCredential.user);
+            setLoading(false);
+          })
+          .catch(error => {
+            console.error('Anonymous auth error:', error);
+            setLoading(false);
+          });
+      }
     });
 
     return unsubscribe;

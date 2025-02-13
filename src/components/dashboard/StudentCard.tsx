@@ -46,7 +46,7 @@ export function StudentCard({ student }: StudentCardProps) {
               <span className="text-text-secondary">Performance</span>
               <span className="font-medium text-text-primary">{student.performance}%</span>
             </div>
-            <Progress value={student.performance} variant="default" />
+            <Progress value={student.performance} variant="primary" />
           </div>
         </div>
       </CardContent>

@@ -65,7 +65,7 @@ export function AssignmentCard({ assignment, onUpload }: AssignmentCardProps) {
               <span className="text-text-secondary">Progress</span>
               <span className="font-medium text-text-primary">{assignment.progress}%</span>
             </div>
-            <Progress value={assignment.progress} variant="default" />
+            <Progress value={assignment.progress} variant="primary" />
           </div>
 
           <div className="flex items-center space-x-2">

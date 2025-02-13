@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Logo from "../components/ui/Logo";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -6,11 +7,11 @@ import {
   BookOpen,
   Calendar,
   CreditCard,
-  Bell,
   Settings,
   Menu,
   X,
   Search,
+  Bell,
 } from "lucide-react";
 
 export default function MainLayout() {
@@ -30,6 +31,18 @@ export default function MainLayout() {
       icon: <Users size={24} />,
       path: "/students",
       color: "text-secondary",
+    },
+    {
+      text: "Teachers",
+      icon: <Users size={24} />,
+      path: "/teachers",
+      color: "text-info",
+    },
+    {
+      text: "Subjects",
+      icon: <BookOpen size={24} />,
+      path: "/subjects",
+      color: "text-success",
     },
     {
       text: "Assignments",
@@ -67,22 +80,20 @@ export default function MainLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-background-secondary">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-border lg:pl-72">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 lg:pl-72 transition-all duration-200">
         <div className="flex flex-col">
           {/* Top Bar */}
-          <div className="flex items-center justify-between h-20 px-6">
-            <div className="flex items-center gap-4 lg:hidden">
+          <div className="flex items-center justify-between h-16 px-4 md:px-6">
+            <div className="flex items-center gap-3 lg:hidden">
               <button
                 onClick={() => setIsMenuOpen(true)}
-                className="p-2 rounded-xl hover:bg-background"
+                className="p-2 rounded-lg hover:bg-gray-100/80 transition-colors"
               >
-                <Menu size={24} className="text-text-primary" />
+                <Menu size={22} className="text-gray-700" />
               </button>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-                StarKid
-              </h1>
+              <Logo />
             </div>
             <div className="flex items-center gap-4">
               <div className="relative">
@@ -267,7 +278,9 @@ export default function MainLayout() {
                 <button
                   key={item.text}
                   onClick={() => navigate(item.path)}
-                  className={`flex flex-col items-center justify-center py-3 rounded-xl transition-colors ${isActive ? item.color : "text-text-secondary"} hover:bg-background/50`}
+                  className={`flex flex-col items-center justify-center py-3 rounded-xl transition-colors ${
+                    isActive ? item.color : "text-text-secondary"
+                  } hover:bg-background/50`}
                 >
                   <span className="mb-1">{item.icon}</span>
                   <span className="text-xs font-medium">{item.text}</span>
