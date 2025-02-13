@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 
 // Import pages
@@ -15,6 +15,9 @@ import Fees from './pages/Fees';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
+import Register from './pages/Register';
+import ResetPassword from './pages/ResetPassword';
+import Unauthorized from './pages/Unauthorized';
 
 function App() {
   return (
@@ -22,7 +25,11 @@ function App() {
       <AuthProvider>
         <Toaster position="top-right" />
         <Routes>
+          {/* Public Routes */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           
           {/* Protected Routes */}
           <Route
@@ -33,16 +40,29 @@ function App() {
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/students" element={<Students />} />
-            <Route path="/teachers" element={<Teachers />} />
-            <Route path="/subjects" element={<Subjects />} />
-            <Route path="/assignments" element={<Assignments />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/fees" element={<Fees />} />
+            
+            {/* Admin and Teacher Routes */}
+            <Route element={<ProtectedRoute roles={['admin', 'teacher']} />}>
+              <Route path="/students" element={<Students />} />
+              <Route path="/assignments" element={<Assignments />} />
+              <Route path="/events" element={<Events />} />
+            </Route>
+
+            {/* Admin Only Routes */}
+            <Route element={<ProtectedRoute roles={['admin']} />}>
+              <Route path="/teachers" element={<Teachers />} />
+              <Route path="/subjects" element={<Subjects />} />
+              <Route path="/fees" element={<Fees />} />
+            </Route>
+
+            {/* Common Protected Routes */}
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
+
+          {/* Catch all route */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AuthProvider>
     </Router>

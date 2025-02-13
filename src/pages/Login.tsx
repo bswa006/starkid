@@ -9,7 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, userProfile } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -99,9 +99,18 @@ export default function Login() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-2">
-                  Password
-                </label>
+                <div className="flex justify-between items-center mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-text-secondary">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/reset-password')}
+                    className="text-sm text-primary hover:text-primary-dark"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary" />
                   <input
@@ -126,6 +135,17 @@ export default function Login() {
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
+
+            <p className="text-center text-sm text-text-secondary">
+              Don't have an account?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('/register')}
+                className="text-primary hover:text-primary-dark font-medium"
+              >
+                Sign up
+              </button>
+            </p>
           </form>
         </div>
       </div>
