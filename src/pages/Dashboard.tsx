@@ -1,4 +1,3 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { DashboardTimeline } from "@/components/dashboard/DashboardTimeline";
 import { DashboardProgress } from "@/components/dashboard/DashboardProgress";
