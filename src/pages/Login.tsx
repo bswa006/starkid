@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import { Mail, Lock, User, GraduationCap, Building2, AlertCircle } from 'lucide-react';
+import { Mail, Lock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
-  const [activeTab, setActiveTab] = useState('parent');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, userProfile } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -17,148 +16,106 @@ export default function Login() {
     try {
       setError('');
       setLoading(true);
-      await login(email, password);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Failed to sign in. Please check your credentials.');
+      const { profile } = await login(email, password);
+      
+      // Navigate based on role
+      navigate(profile.role === 'admin' ? '/admin/dashboard' : '/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Failed to sign in. Please check your credentials.');
       console.error('Login error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const tabs = [
-    { id: 'parent', label: 'Parent', icon: <User size={24} />, color: 'primary' },
-    { id: 'teacher', label: 'Teacher', icon: <GraduationCap size={24} />, color: 'secondary' },
-    { id: 'admin', label: 'Admin', icon: <Building2 size={24} />, color: 'accent' },
-  ];
-
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-background">
-      {/* Left Side - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 lg:p-16 xl:p-24">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center lg:text-left">
-            <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent mb-2">
-              Welcome to StarKid
-            </h1>
-            <p className="text-text-secondary text-sm lg:text-base">
-              Sign in to continue to your dashboard
-            </p>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h1 className="text-center text-3xl font-bold text-gray-900">
+            Welcome to StarKid
+          </h1>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Sign in to continue to your dashboard
+          </p>
+        </div>
 
-          {/* Role Selection */}
-          <div className="mt-8">
-            <div className="bg-background rounded-2xl p-2 flex shadow-sm border border-border">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`
-                    flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all
-                    ${activeTab === tab.id
-                      ? `bg-surface text-${tab.color} shadow-sm`
-                      : 'text-text-secondary hover:text-text-primary'
-                    }
-                  `}
-                >
-                  {tab.icon}
-                  {tab.label}
-                </button>
-              ))}
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {error && (
+            <div className="rounded-md bg-red-50 p-4">
+              <p className="text-sm text-red-700">{error}</p>
             </div>
-          </div>
+          )}
 
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="p-4 rounded-xl bg-secondary/10 flex items-start space-x-3">
-                <AlertCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-secondary">{error}</p>
-              </div>
-            )}
-
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
-                  Email address
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary" />
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="w-full h-12 pl-12 pr-4 bg-surface rounded-xl text-text-primary placeholder-text-tertiary border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email" className="sr-only">Email address</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400" />
                 </div>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label htmlFor="password" className="block text-sm font-medium text-text-secondary">
-                    Password
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => navigate('/reset-password')}
-                    className="text-sm text-primary hover:text-primary-dark"
-                  >
-                    Forgot Password?
-                  </button>
-                </div>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary" />
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="w-full h-12 pl-12 pr-4 bg-surface rounded-xl text-text-primary placeholder-text-tertiary border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                  placeholder="Email address"
+                />
               </div>
             </div>
 
+            <div className="mt-4">
+              <label htmlFor="password" className="sr-only">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="appearance-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end">
+            <div className="text-sm">
+              <Link to="/reset-password" className="font-medium text-blue-600 hover:text-blue-500">
+                Forgot Password?
+              </Link>
+            </div>
+          </div>
+
+          <div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-primary hover:bg-primary-dark focus:bg-primary-dark text-white font-medium rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/20"
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
+          </div>
 
-            <p className="text-center text-sm text-text-secondary">
+          <div className="text-center">
+            <p className="text-sm text-gray-600">
               Don't have an account?{' '}
-              <button
-                type="button"
-                onClick={() => navigate('/register')}
-                className="text-primary hover:text-primary-dark font-medium"
-              >
+              <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
                 Sign up
-              </button>
+              </Link>
             </p>
-          </form>
-        </div>
-      </div>
-
-      {/* Right Side - Illustration */}
-      <div className="hidden lg:block lg:w-1/2 bg-primary/5 p-16 xl:p-24">
-        <div className="h-full flex items-center justify-center">
-          <img
-            src="/school-illustration.svg"
-            alt="School Illustration"
-            className="max-w-full max-h-full object-contain"
-          />
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Logo from "../components/ui/Logo";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard,
   Users,
@@ -18,6 +19,7 @@ export default function MainLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
 
   const menuItems = [
     {
@@ -118,6 +120,19 @@ export default function MainLayout() {
                   alt="User"
                 />
               </div>
+              <button
+                onClick={async () => {
+                  try {
+                    await logout();
+                    navigate('/login');
+                  } catch (error) {
+                    console.error('Logout error:', error);
+                  }
+                }}
+                className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>

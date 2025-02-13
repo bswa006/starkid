@@ -22,12 +22,12 @@ export const assignmentService = {
     }
   },
 
-  async getByStudent(studentId: string): Promise<Assignment[]> {
+  async getByTeacher(teacherId: string): Promise<Assignment[]> {
     try {
       const assignmentsRef = collection(db, COLLECTION_NAME);
       const q = query(
         assignmentsRef,
-        where('studentId', '==', studentId),
+        where('teacherId', '==', teacherId),
         orderBy('dueDate', 'desc')
       );
       const querySnapshot = await getDocs(q);
@@ -36,8 +36,12 @@ export const assignmentService = {
         ...doc.data()
       })) as Assignment[];
     } catch (error: any) {
-      console.error('Error in getByStudent:', error);
-      throw new Error('Failed to fetch student assignments: ' + error?.message);
+      console.error('Error in getByTeacher:', error);
+      if (error?.message?.includes('index')) {
+        console.log('Waiting for index to be created...');
+        return []; // Return empty array while index is being created
+      }
+      throw new Error('Failed to fetch teacher assignments: ' + error?.message);
     }
   },
 
@@ -56,6 +60,10 @@ export const assignmentService = {
       })) as Assignment[];
     } catch (error: any) {
       console.error('Error in getByStatus:', error);
+      if (error?.message?.includes('index')) {
+        console.log('Waiting for index to be created...');
+        return []; // Return empty array while index is being created
+      }
       throw new Error('Failed to fetch assignments by status: ' + error?.message);
     }
   },

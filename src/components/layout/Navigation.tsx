@@ -1,29 +1,39 @@
-
-import { NavLink, useLocation } from 'react-router-dom';
 import {
-  HomeIcon,
-  UserGroupIcon,
   AcademicCapIcon,
+  BellIcon,
   BookOpenIcon,
   CalendarIcon,
-  CreditCardIcon,
-  BellIcon,
   CogIcon,
-} from '@heroicons/react/24/outline';
+  HomeIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
+import { NavLink } from "react-router-dom";
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-  { name: 'Students', href: '/students', icon: UserGroupIcon },
-  { name: 'Teachers', href: '/teachers', icon: AcademicCapIcon },
-  { name: 'Assignments', href: '/assignments', icon: BookOpenIcon },
-  { name: 'Events', href: '/events', icon: CalendarIcon },
-  { name: 'Fees', href: '/fees', icon: CreditCardIcon },
-  { name: 'Notifications', href: '/notifications', icon: BellIcon },
-  { name: 'Settings', href: '/settings', icon: CogIcon },
+import { useAuth } from "@/contexts/AuthContext";
+
+const adminNavigation = [
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
+  { name: "Students", href: "/students", icon: UserGroupIcon },
+  { name: "Teachers", href: "/teachers", icon: AcademicCapIcon },
+  { name: "Assignments", href: "/assignments", icon: BookOpenIcon },
+  { name: "Events", href: "/events", icon: CalendarIcon },
+  { name: "Notifications", href: "/notifications", icon: BellIcon },
+  { name: "Settings", href: "/settings", icon: CogIcon },
+];
+
+const teacherNavigation = [
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
+  { name: "Students", href: "/students", icon: UserGroupIcon },
+  { name: "Assignments", href: "/assignments", icon: BookOpenIcon },
+  { name: "Events", href: "/events", icon: CalendarIcon },
+  { name: "Notifications", href: "/notifications", icon: BellIcon },
 ];
 
 export function Navigation() {
-  const location = useLocation();
+  const { userProfile } = useAuth();
+
+  const navigation =
+    userProfile?.role === "admin" ? adminNavigation : teacherNavigation;
 
   return (
     <>
@@ -37,8 +47,8 @@ export function Navigation() {
               className={({ isActive }) =>
                 `flex items-center px-4 py-2 text-sm font-medium rounded-md ${
                   isActive
-                    ? 'bg-primary text-white'
-                    : 'text-text-secondary hover:bg-surface-hover'
+                    ? "bg-primary text-white"
+                    : "text-text-secondary hover:bg-surface-hover"
                 }`
               }
             >
@@ -60,8 +70,8 @@ export function Navigation() {
                 className={({ isActive }) =>
                   `flex flex-col items-center px-2 py-1 text-xs font-medium rounded-md ${
                     isActive
-                      ? 'text-primary'
-                      : 'text-text-secondary hover:text-primary'
+                      ? "text-primary"
+                      : "text-text-secondary hover:text-primary"
                   }`
                 }
               >

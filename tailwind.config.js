@@ -10,20 +10,19 @@ export default {
   theme: {
     extend: {
       colors: {
+        border: 'rgb(var(--border) / <alpha-value>)',
         background: {
           DEFAULT: 'rgb(var(--background) / <alpha-value>)',
           secondary: 'rgb(var(--background-secondary) / <alpha-value>)',
+          tertiary: 'rgb(var(--background-tertiary) / <alpha-value>)',
         },
         surface: {
           DEFAULT: 'rgb(var(--surface) / <alpha-value>)',
           hover: 'rgb(var(--surface-hover) / <alpha-value>)',
           pressed: 'rgb(var(--surface-pressed) / <alpha-value>)',
         },
-        border: {
-          DEFAULT: 'rgb(var(--border) / <alpha-value>)',
-          hover: 'rgb(var(--border-hover) / <alpha-value>)',
-        },
         text: {
+          DEFAULT: 'rgb(var(--text-primary) / <alpha-value>)',
           primary: 'rgb(var(--text-primary) / <alpha-value>)',
           secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
           tertiary: 'rgb(var(--text-tertiary) / <alpha-value>)',
@@ -63,6 +62,10 @@ export default {
         },
       },
       fontSize: {
+        'heading': ['18px', { fontWeight: '700' }],
+        'subheading': ['16px', { fontWeight: '500' }],
+        'body': ['14px', { fontWeight: '400' }],
+        'caption': ['12px', { fontWeight: '300' }],
         'xs': ['0.75rem', { lineHeight: '1rem' }],
         'sm': ['0.875rem', { lineHeight: '1.25rem' }],
         'base': ['1rem', { lineHeight: '1.5rem' }],
@@ -74,6 +77,7 @@ export default {
         '5xl': ['3rem', { lineHeight: '1' }],
       },
       fontFamily: {
+        sans: ['Roboto', ...defaultTheme.fontFamily.sans],
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         display: ['Poppins', ...defaultTheme.fontFamily.sans],
       },
@@ -91,32 +95,31 @@ export default {
         'md-dark': '0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.15)',
         'lg-dark': '0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.15)',
       },
+      border: {
+        DEFAULT: 'rgb(var(--border) / <alpha-value>)',
+        hover: 'rgb(var(--border-hover) / <alpha-value>)',
+      },
+      text: {
+        primary: 'rgb(var(--text-primary) / <alpha-value>)',
+        secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
+        tertiary: 'rgb(var(--text-tertiary) / <alpha-value>)',
+        brand: 'rgb(var(--text-brand) / <alpha-value>)',
+      },
       animation: {
-        'fade-in': 'fade-in 0.2s ease-in-out',
-        'slide-in': 'slide-in 0.2s ease-out',
-        'slide-out': 'slide-out 0.2s ease-in',
-        'progress': 'progress 1s ease-in-out infinite',
+        'slide-in': 'slide-in 0.3s ease-out',
+        'slide-out': 'slide-out 0.3s ease-out'
       },
       keyframes: {
-        'progress': {
-          '0%': { transform: 'translateX(-100%)' },
-          '50%': { transform: 'translateX(-10%)' },
-          '100%': { transform: 'translateX(0%)' },
-        },
-        'fade-in': {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
         'slide-in': {
           '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(0)' }
         },
         'slide-out': {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-100%)' },
-        },
-      },
-    },
+          '100%': { transform: 'translateX(-100%)' }
+        }
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 }

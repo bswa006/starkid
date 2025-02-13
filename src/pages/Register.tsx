@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/Input';
 import type { UserRole } from '@/types/auth';
 
 export default function Register() {
-  const [activeRole, setActiveRole] = useState<UserRole>('parent');
+  const [activeRole, setActiveRole] = useState<UserRole>('teacher');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,7 +21,6 @@ export default function Register() {
   const navigate = useNavigate();
 
   const roles = [
-    { id: 'parent' as UserRole, label: 'Parent', icon: <User size={24} /> },
     { id: 'teacher' as UserRole, label: 'Teacher', icon: <User size={24} /> },
     { id: 'admin' as UserRole, label: 'Admin', icon: <User size={24} /> },
   ] as const;

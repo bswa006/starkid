@@ -1,4 +1,4 @@
-export type UserRole = 'student' | 'parent' | 'teacher' | 'admin';
+export type UserRole = 'teacher' | 'admin';
 
 export interface UserProfile {
   id: string;
@@ -7,6 +7,7 @@ export interface UserProfile {
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
+  classId?: string; // Optional since only teachers will have this
   createdAt: Date;
   updatedAt: Date;
 }

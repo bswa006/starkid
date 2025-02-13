@@ -21,9 +21,11 @@ export interface Student {
   section: string;
   email: string;
   phone: string;
-  address: string;
-  parentName: string;
-  parentPhone: string;
+  classId: string;
+  parentId?: string;
+  status: 'active' | 'inactive';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Subject {
@@ -50,7 +52,7 @@ export interface Class {
   status: 'active' | 'inactive';
 }
 
-export type AssignmentStatus = 'draft' | 'published' | 'submitted' | 'graded' | 'late' | 'missing';
+export type AssignmentStatus = 'draft' | 'published' | 'submitted' | 'graded' | 'late' | 'missing' | 'completed';
 
 export interface Assignment {
   id: string;
@@ -58,30 +60,33 @@ export interface Assignment {
   description: string;
   subjectId: string;
   teacherId: string;
-  studentId?: string;
-  class: string;
-  section: string;
+  classId: string;
   dueDate: Date;
-  points: number;
-  score?: number;
+  maxPoints: number;
   attachments?: string[];
   status: AssignmentStatus;
-  feedback?: string;
-  submittedAt?: Date;
-  gradedAt?: Date;
   createdAt: Date;
+  updatedAt: Date;
 }
 
-export type AttendanceStatus = 'present' | 'absent' | 'late';
+export type AttendanceStatus = 'present' | 'absent' | 'late' | 'excused';
+
+export interface AttendanceRecord {
+  studentId: string;
+  status: AttendanceStatus;
+  notes?: string;
+}
+
+import { Timestamp } from 'firebase/firestore';
 
 export interface Attendance {
   id: string;
-  studentId: string;
-  date: Date;
-  status: AttendanceStatus;
-  subject?: string;
-  notes?: string;
-  recordedBy: string;
+  classId: string;
+  date: Date | Timestamp;
+  records: AttendanceRecord[];
+  markedBy: string;
+  markedAt: Date | Timestamp;
+  updatedAt: Date | Timestamp;
 }
 
 export interface Quiz {
@@ -90,8 +95,7 @@ export interface Quiz {
   description: string;
   subjectId: string;
   teacherId: string;
-  class: string;
-  section: string;
+  classId: string;
   duration: number; // in minutes
   totalPoints: number;
   questions: QuizQuestion[];
@@ -99,6 +103,7 @@ export interface Quiz {
   endDate: Date;
   status: 'draft' | 'published' | 'closed';
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface QuizQuestion {
@@ -113,34 +118,38 @@ export interface QuizQuestion {
 export interface QuizResult {
   id: string;
   quizId: string;
-  studentId: string;
-  answers: {
-    questionId: string;
-    answer: string | string[];
+  classId: string;
+  results: {
+    studentId: string;
+    score: number;
+    answers: {
+      questionId: string;
+      answer: string | string[];
+    }[];
+    timeSpent: number; // in seconds
   }[];
-  score: number;
-  timeSpent: number; // in seconds
-  submittedAt: Date;
+  gradedBy: string;
+  gradedAt: Date;
+  updatedAt: Date;
 }
 
 export type TimelineEventType = 
   | 'assignment_created'
-  | 'assignment_submitted'
   | 'assignment_graded'
-  | 'quiz_started'
-  | 'quiz_completed'
   | 'attendance_marked'
-  | 'grade_updated'
-  | 'note_added';
+  | 'quiz_published'
+  | 'quiz_graded'
+  | 'class_announcement';
 
 export interface TimelineEvent {
   id: string;
   type: TimelineEventType;
   title: string;
   description: string;
-  studentId?: string;
   teacherId?: string;
+  classId: string;
   subjectId?: string;
-  timestamp: Date;
+  timestamp: Date | Timestamp;
   metadata?: Record<string, any>;
+  createdAt: Date | Timestamp;
 }

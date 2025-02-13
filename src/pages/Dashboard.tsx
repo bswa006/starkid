@@ -1,43 +1,30 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { DashboardStats } from '@/components/dashboard/DashboardStats';
-import { DashboardTimeline } from '@/components/dashboard/DashboardTimeline';
-import { DashboardProgress } from '@/components/dashboard/DashboardProgress';
-import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { DashboardStats } from "@/components/dashboard/DashboardStats";
+import { DashboardTimeline } from "@/components/dashboard/DashboardTimeline";
+import { DashboardProgress } from "@/components/dashboard/DashboardProgress";
 
 export default function Dashboard() {
-  const { userProfile } = useAuth();
-
   return (
-    <div className="flex-1 space-y-8 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">
-          {userProfile?.role === 'student' ? 'My Dashboard' : 'Class Dashboard'}
-        </h2>
-      </div>
+    <div className="flex-1 max-w-7xl mx-auto px-4">
+      <h2 className="text-2xl font-bold mb-6">Class Dashboard</h2>
 
       {/* Stats */}
-      <DashboardStats />
+      <div className="mb-6">
+        <DashboardStats />
+      </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Progress Overview */}
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Progress Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <DashboardProgress />
-          </CardContent>
-        </Card>
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Progress Overview</h3>
+          <DashboardProgress />
+        </div>
 
         {/* Timeline */}
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <DashboardTimeline />
-          </CardContent>
-        </Card>
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+          <DashboardTimeline />
+        </div>
       </div>
     </div>
   );

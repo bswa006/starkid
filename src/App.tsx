@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import { AuthProvider } from './contexts/AuthContext';
-import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
+import Fees from '@/pages/Fees';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
@@ -11,7 +12,6 @@ import Teachers from './pages/Teachers';
 import Subjects from './pages/Subjects';
 import Assignments from './pages/Assignments';
 import Events from './pages/Events';
-import Fees from './pages/Fees';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
@@ -42,14 +42,14 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             
             {/* Admin and Teacher Routes */}
-            <Route element={<ProtectedRoute roles={['admin', 'teacher']} />}>
+            <Route element={<ProtectedRoute allowedRoles={['admin', 'teacher']}><Outlet /></ProtectedRoute>}>
               <Route path="/students" element={<Students />} />
               <Route path="/assignments" element={<Assignments />} />
               <Route path="/events" element={<Events />} />
             </Route>
 
             {/* Admin Only Routes */}
-            <Route element={<ProtectedRoute roles={['admin']} />}>
+            <Route element={<ProtectedRoute allowedRoles={['admin']}><Outlet /></ProtectedRoute>}>
               <Route path="/teachers" element={<Teachers />} />
               <Route path="/subjects" element={<Subjects />} />
               <Route path="/fees" element={<Fees />} />

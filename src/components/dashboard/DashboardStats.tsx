@@ -4,13 +4,17 @@ import { studentService } from "@/services/student.service";
 import { assignmentService } from "@/services/assignment.service";
 import { attendanceService } from "@/services/attendance.service";
 import { quizService } from "@/services/quiz.service";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface StatsData {
   totalStudents: number;
   activeAssignments: number;
   attendanceRate: number;
   averageScore: number;
+  pendingGrading: number;
+  upcomingAssignments: number;
   loading: boolean;
+  error?: string;
 }
 
 export function DashboardStats() {
@@ -19,17 +23,29 @@ export function DashboardStats() {
     activeAssignments: 0,
     attendanceRate: 0,
     averageScore: 0,
+    pendingGrading: 0,
+    upcomingAssignments: 0,
     loading: true,
   });
+
+  const { userProfile } = useAuth();
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        // Fetch total students
-        const students = await studentService.getAll();
+        let students: any[] = [];
+        let assignments: any[] = [];
 
-        // Fetch active assignments
-        const assignments = await assignmentService.getAll();
+        if (userProfile?.role === "admin") {
+          // Admin sees all stats
+          students = await studentService.getAll();
+          assignments = await assignmentService.getAll();
+        } else if (userProfile?.role === "teacher") {
+          // Teacher sees their class stats
+          students = await studentService.getByTeacher(userProfile.id);
+          assignments = await assignmentService.getByTeacher(userProfile.id);
+        }
+
         const activeAssignments = assignments.filter(
           (a) => a.status === "published" || a.status === "submitted"
         ).length;
@@ -72,70 +88,86 @@ export function DashboardStats() {
           activeAssignments,
           attendanceRate,
           averageScore,
+          pendingGrading: assignments.filter((a) => a.status === "submitted")
+            .length,
+          upcomingAssignments: assignments.filter((a) => a.status === "draft")
+            .length,
           loading: false,
         });
       } catch (error) {
         console.error("Error fetching dashboard stats:", error);
-        setStats((prev) => ({ ...prev, loading: false }));
+        setStats((prev) => ({
+          ...prev,
+          loading: false,
+          error:
+            error instanceof Error
+              ? error.message
+              : "An error occurred while fetching stats",
+        }));
       }
     }
 
     fetchStats();
-  }, []);
+  }, [userProfile]);
 
   const statCards = [
     {
       title: "Total Students",
       value: stats.totalStudents.toString(),
       change: "",
-      icon: <Users className="h-5 w-5" />,
+      icon: <Users className="h-6 w-6" />,
       loading: stats.loading,
+      gradient: "from-blue-500 to-blue-600",
+      iconBg: "bg-blue-400/20",
     },
     {
       title: "Active Assignments",
       value: stats.activeAssignments.toString(),
       change: "",
-      icon: <BookOpen className="h-5 w-5" />,
+      icon: <BookOpen className="h-6 w-6" />,
       loading: stats.loading,
+      gradient: "from-purple-500 to-purple-600",
+      iconBg: "bg-purple-400/20",
     },
     {
       title: "Attendance Rate",
       value: `${stats.attendanceRate.toFixed(1)}%`,
       change: "",
-      icon: <CheckCircle className="h-5 w-5" />,
+      icon: <CheckCircle className="h-6 w-6" />,
       loading: stats.loading,
+      gradient: "from-green-500 to-green-600",
+      iconBg: "bg-green-400/20",
     },
     {
       title: "Average Score",
       value: `${stats.averageScore.toFixed(1)}%`,
       change: "",
-      icon: <TrendingUp className="h-5 w-5" />,
+      icon: <TrendingUp className="h-6 w-6" />,
       loading: stats.loading,
+      gradient: "from-orange-500 to-orange-600",
+      iconBg: "bg-orange-400/20",
     },
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-6 grid-cols-2">
       {statCards.map((stat, index) => (
         <div
           key={index}
-          className="rounded-xl border bg-card text-card-foreground shadow"
+          className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${stat.gradient}`}
         >
-          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-            <h3 className="tracking-tight text-sm font-medium">{stat.title}</h3>
-            <div className="h-8 w-8 rounded-full bg-primary/10 p-2 text-primary">
-              {stat.icon}
+          <div className="p-6 flex flex-col h-[120px]">
+            <div className="flex flex-col gap-0.5">
+              <div className="w-5 h-5 text-white mb-1">{stat.icon}</div>
+              <h3 className="text-sm text-white/90 leading-none">{stat.title}</h3>
             </div>
-          </div>
-          <div className="p-6 pt-0">
-            {stat.loading ? (
-              <div className="h-7 w-16 animate-pulse rounded bg-gray-200" />
-            ) : (
-              <div className="text-2xl font-bold">{stat.value}</div>
-            )}
-            {stat.change && (
-              <p className="text-xs text-muted-foreground">{stat.change}</p>
-            )}
+            <div className="mt-auto">
+              {stat.loading ? (
+                <div className="h-8 w-16 animate-pulse rounded bg-white/10" />
+              ) : (
+                <div className="text-3xl font-semibold text-white leading-none">{stat.value}</div>
+              )}
+            </div>
           </div>
         </div>
       ))}
