@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './Command';
-import { Popover, PopoverContent, PopoverTrigger } from './Popover';
-import { Badge } from './Badge';
-import { X, Check } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import { Button } from './Button';
+import { Check, X } from "lucide-react";
+import * as React from "react";
+import { cn } from "../../lib/utils";
+import { Badge } from "./Badge";
+import { Command, CommandEmpty, CommandGroup, CommandInput } from "./Command";
+import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
 export interface Option {
   label: string;
@@ -25,27 +24,29 @@ export function MultiSelect({
   options,
   selected,
   onChange,
-  placeholder = 'Select items...',
+  placeholder = "Select items...",
   className,
-  disabled = false,
   error,
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = React.useState("");
 
-  const selectedOptions = options.filter((option) => selected.includes(option.value));
-  const filteredOptions = options.filter((option) => 
+  const selectedOptions = options.filter((option) =>
+    selected.includes(option.value)
+  );
+  const filteredOptions = options.filter((option) =>
     option.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSelect = React.useCallback((value: string) => {
-    const isSelected = selected.includes(value);
-    onChange(
-      isSelected
-        ? selected.filter((v) => v !== value)
-        : [...selected, value]
-    );
-  }, [onChange, selected]);
+  const handleSelect = React.useCallback(
+    (value: string) => {
+      const isSelected = selected.includes(value);
+      onChange(
+        isSelected ? selected.filter((v) => v !== value) : [...selected, value]
+      );
+    },
+    [onChange, selected]
+  );
 
   return (
     <div className="relative">
@@ -53,8 +54,9 @@ export function MultiSelect({
         <PopoverTrigger asChild>
           <div
             className={cn(
-              'relative flex min-h-[3rem] w-full cursor-pointer items-center rounded-xl border border-border bg-surface px-4 py-2 text-text-primary transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 hover:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50',
-              error && 'border-error focus-within:border-error focus-within:ring-error/20',
+              "relative flex min-h-[3rem] w-full cursor-pointer items-center rounded-xl border border-border bg-surface px-4 py-2 text-text-primary transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 hover:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50",
+              error &&
+                "border-error focus-within:border-error focus-within:ring-error/20",
               className
             )}
             onClick={() => setOpen(!open)}
@@ -95,11 +97,18 @@ export function MultiSelect({
             </div>
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 shadow-lg" align="start" side="bottom">
-          <Command shouldFilter={false} className="border rounded-lg overflow-hidden">
-            <CommandInput 
-              placeholder="Search..." 
-              className="h-11 px-3 border-b" 
+        <PopoverContent
+          className="w-[var(--radix-popover-trigger-width)] p-0 shadow-lg"
+          align="start"
+          side="bottom"
+        >
+          <Command
+            shouldFilter={false}
+            className="border rounded-lg overflow-hidden"
+          >
+            <CommandInput
+              placeholder="Search..."
+              className="h-11 px-3 border-b"
               value={searchQuery}
               onValueChange={setSearchQuery}
             />
@@ -114,8 +123,8 @@ export function MultiSelect({
                     key={option.value}
                     type="button"
                     className={cn(
-                      'w-full text-left text-sm rounded-md cursor-pointer px-2 py-1.5 transition-colors',
-                      isSelected ? 'bg-slate-100' : 'hover:bg-slate-50'
+                      "w-full text-left text-sm rounded-md cursor-pointer px-2 py-1.5 transition-colors",
+                      isSelected ? "bg-slate-100" : "hover:bg-slate-50"
                     )}
                     onMouseDown={(e) => {
                       e.preventDefault();
@@ -128,15 +137,20 @@ export function MultiSelect({
                     }}
                   >
                     <div className="flex items-center gap-2 w-full select-none">
-                      <div 
+                      <div
                         className={cn(
-                          'flex h-4 w-4 items-center justify-center rounded border transition-colors',
+                          "flex h-4 w-4 items-center justify-center rounded border transition-colors",
                           isSelected
-                            ? 'border-[#6B7FE3] bg-[#6B7FE3] text-white'
-                            : 'border-slate-300 hover:border-[#6B7FE3]'
+                            ? "border-[#6B7FE3] bg-[#6B7FE3] text-white"
+                            : "border-slate-300 hover:border-[#6B7FE3]"
                         )}
                       >
-                        <Check className={cn('h-3 w-3', isSelected ? 'opacity-100' : 'opacity-0')} />
+                        <Check
+                          className={cn(
+                            "h-3 w-3",
+                            isSelected ? "opacity-100" : "opacity-0"
+                          )}
+                        />
                       </div>
                       <span className="flex-1">{option.label}</span>
                     </div>
