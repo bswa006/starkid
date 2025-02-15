@@ -98,14 +98,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const unsubscribe = onAuthStateChanged(
         auth,
         async (user) => {
-          console.log("Auth state changed:", { user: user?.email });
+          console.log("Auth state changed:", { 
+            email: user?.email,
+            uid: user?.uid,
+            emailVerified: user?.emailVerified,
+          });
           setCurrentUser(user);
           try {
             if (user) {
               // Fetch user profile
               const profile = await authService.getUserProfile(user.uid);
-              setUserProfile(profile);
+              console.log("Auth Debug:", {
+                uid: user.uid,
+                profile,
+                profileExists: !!profile,
+                role: profile?.role,
+              });
+              
+              if (!profile) {
+                console.log("Creating default profile...");
+                // Create a default profile if none exists
+                const defaultProfile: UserProfile = {
+                  id: user.uid,
+                  email: user.email!,
+                  role: 'teacher', // Set as teacher since that's what the logs show
+                  firstName: user.displayName?.split(' ')[0] || '',
+                  lastName: user.displayName?.split(' ')[1] || '',
+                  phoneNumber: '',
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                };
+                await authService.updateUserProfile(user.uid, defaultProfile);
+                console.log("Created default profile:", defaultProfile);
+                setUserProfile(defaultProfile);
+              } else {
+                console.log("Using existing profile:", profile);
+                setUserProfile(profile);
+              }
             } else {
+              console.log("No user, setting profile to null");
               setUserProfile(null);
             }
           } catch (error) {

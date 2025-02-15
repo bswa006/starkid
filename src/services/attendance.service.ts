@@ -1,7 +1,6 @@
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, where, orderBy, Timestamp } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import type { Attendance } from '@/types/school';
-import { studentService } from './student.service';
 
 const COLLECTION_NAME = 'attendance';
 
@@ -103,21 +102,10 @@ export const attendanceService = {
 
   async getByTeacher(teacherId: string): Promise<Attendance[]> {
     try {
-      // First get all students for this teacher
-      const students = await studentService.getByTeacher(teacherId);
-      
-      // If there are no students, return an empty array
-      if (students.length === 0) {
-        return [];
-      }
-      
-      const studentIds = students.map(student => student.id);
-      
-      // Then get attendance records for all these students
       const attendanceRef = collection(db, COLLECTION_NAME);
       const q = query(
         attendanceRef,
-        where('studentId', 'in', studentIds),
+        where('teacherId', '==', teacherId),
         orderBy('date', 'desc')
       );
       
@@ -136,20 +124,32 @@ export const attendanceService = {
   async create(attendance: Omit<Attendance, 'id'>): Promise<Attendance> {
     const attendanceRef = collection(db, COLLECTION_NAME);
     
-    // Convert date to Timestamp if needed
+    // Convert dates to Timestamps
     const date = attendance.date instanceof Timestamp 
       ? attendance.date 
       : Timestamp.fromDate(attendance.date instanceof Date ? attendance.date : new Date(attendance.date));
     
+    const markedAt = attendance.markedAt instanceof Timestamp
+      ? attendance.markedAt
+      : Timestamp.fromDate(attendance.markedAt instanceof Date ? attendance.markedAt : new Date(attendance.markedAt));
+
+    const updatedAt = attendance.updatedAt instanceof Timestamp
+      ? attendance.updatedAt
+      : Timestamp.fromDate(attendance.updatedAt instanceof Date ? attendance.updatedAt : new Date(attendance.updatedAt));
+    
     const docRef = await addDoc(attendanceRef, {
       ...attendance,
-      date
+      date,
+      markedAt,
+      updatedAt
     });
     
     return {
       id: docRef.id,
       ...attendance,
-      date: date.toDate()
+      date: date.toDate(),
+      markedAt: markedAt.toDate(),
+      updatedAt: updatedAt.toDate()
     };
   },
 
@@ -158,10 +158,21 @@ export const attendanceService = {
     const updateData = { ...data };
     
     if (data.date) {
-      // Convert date to Timestamp if needed
       updateData.date = data.date instanceof Timestamp 
         ? data.date 
         : Timestamp.fromDate(data.date instanceof Date ? data.date : new Date(data.date));
+    }
+
+    if (data.markedAt) {
+      updateData.markedAt = data.markedAt instanceof Timestamp
+        ? data.markedAt
+        : Timestamp.fromDate(data.markedAt instanceof Date ? data.markedAt : new Date(data.markedAt));
+    }
+
+    if (data.updatedAt) {
+      updateData.updatedAt = data.updatedAt instanceof Timestamp
+        ? data.updatedAt
+        : Timestamp.fromDate(data.updatedAt instanceof Date ? data.updatedAt : new Date(data.updatedAt));
     }
     
     await updateDoc(attendanceRef, updateData);
@@ -182,17 +193,18 @@ export const attendanceService = {
       const attendanceRef = collection(db, COLLECTION_NAME);
       const q = query(
         attendanceRef,
-        where('studentId', '==', studentId)
+        where('records', 'array-contains', { studentId })
       );
       const querySnapshot = await getDocs(q);
       const records = querySnapshot.docs.map(doc => doc.data() as Attendance);
       
       return records.reduce((stats, record) => {
-        // Each attendance record has an array of student records
         const studentRecord = record.records.find(r => r.studentId === studentId);
         if (studentRecord) {
           stats.total++;
-          stats[studentRecord.status.toLowerCase() as keyof typeof stats]++;
+          if (studentRecord.status === 'present') stats.present++;
+          else if (studentRecord.status === 'absent') stats.absent++;
+          else if (studentRecord.status === 'late') stats.late++;
         }
         return stats;
       }, {

@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 import Fees from '@/pages/Fees';
+import Classes from '@/pages/Classes';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
@@ -44,6 +45,7 @@ function App() {
             {/* Admin and Teacher Routes */}
             <Route element={<ProtectedRoute allowedRoles={['admin', 'teacher']}><Outlet /></ProtectedRoute>}>
               <Route path="/students" element={<Students />} />
+              <Route path="/classes" element={<Classes />} />
               <Route path="/assignments" element={<Assignments />} />
               <Route path="/events" element={<Events />} />
             </Route>

@@ -70,32 +70,32 @@
 
   .dark {
     /* Base Colors */
-    --primary: #8B85F5;
-    --primary-hover: #7A73F4;
-    --primary-pressed: #6C5CE7;
-    --primary-light: #A8A5F0;
-    --primary-dark: #4834D4;
+    --primary: 139, 133, 245;
+    --primary-hover: 122, 115, 244;
+    --primary-pressed: 108, 92, 231;
+    --primary-light: 168, 165, 240;
+    --primary-dark: 72, 52, 212;
 
-    --secondary: #FF8585;
-    --secondary-hover: #FF7070;
-    --secondary-pressed: #FF6B6B;
+    --secondary: 255, 133, 133;
+    --secondary-hover: 255, 112, 112;
+    --secondary-pressed: 255, 107, 107;
 
-    --accent: #69DB7E;
-    --accent-hover: #5FD174;
-    --accent-pressed: #51CF66;
+    --accent: 105, 219, 126;
+    --accent-hover: 95, 209, 116;
+    --accent-pressed: 81, 207, 102;
 
     /* Semantic Colors */
-    --success: #69DB7E;
-    --success-hover: #5FD174;
-    --success-pressed: #51CF66;
+    --success: 105, 219, 126;
+    --success-hover: 95, 209, 116;
+    --success-pressed: 81, 207, 102;
 
-    --warning: #FFE066;
-    --warning-hover: #FFD43B;
-    --warning-pressed: #FCC419;
+    --warning: 255, 224, 102;
+    --warning-hover: 255, 212, 59;
+    --warning-pressed: 252, 196, 25;
 
-    --error: #FF8585;
-    --error-hover: #FF7070;
-    --error-pressed: #FF6B6B;
+    --error: 255, 133, 133;
+    --error-hover: 255, 112, 112;
+    --error-pressed: 255, 107, 107;
 
     /* UI Colors */
     --background: #121212;

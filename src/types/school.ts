@@ -45,11 +45,15 @@ export interface Subject {
 export interface Class {
   id: string;
   name: string;
+  grade: 'playschool' | 'nursery' | 'lkg' | 'ukg';
   section: string;
   academicYear: string;
   classTeacherId: string;
   subjects: string[];
+  maxStudents: number; // Maximum students per section
   status: 'active' | 'inactive';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type AssignmentStatus = 'draft' | 'published' | 'submitted' | 'graded' | 'late' | 'missing' | 'completed';

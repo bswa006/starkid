@@ -25,6 +25,20 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
     
+    // Teachers collection
+    match /teachers/{teacherId} {
+      allow read: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create, update, delete: if isSignedIn() && isAdmin();
+    }
+    
+    // Subjects collection
+    match /subjects/{subjectId} {
+      allow read: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create, update, delete: if isSignedIn() && isAdmin();
+    }
+    
     // Students collection
     match /students/{studentId} {
       allow read: if isSignedIn() && (isAdmin() || isTeacher());
@@ -49,8 +63,23 @@ service cloud.firestore {
       allow write: if isSignedIn() && (isAdmin() || isTeacher());
     }
     
+    // Classes collection
+    match /classes/{classId} {
+      allow read: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
+    
     // Quizzes collection
     match /quizzes/{quizId} {
+      allow read: if isSignedIn() && (isAdmin() || isTeacher());
+      allow write: if isSignedIn() && (isAdmin() || isTeacher());
+    }
+
+    // Quiz results collection
+    match /quiz_results/{resultId} {
       allow read: if isSignedIn() && (isAdmin() || isTeacher());
       allow write: if isSignedIn() && (isAdmin() || isTeacher());
     }

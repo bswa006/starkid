@@ -1,87 +1,122 @@
 import {
-  AcademicCapIcon,
-  BellIcon,
-  BookOpenIcon,
-  CalendarIcon,
-  CogIcon,
-  HomeIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/outline";
+  Home,
+  Users,
+  GraduationCap,
+  BookOpen,
+  Calendar,
+  Bell,
+  Settings,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 import { useAuth } from "@/contexts/AuthContext";
 
+const mainNavItems = [
+  { name: "Dashboard", href: "/dashboard", icon: Home },
+  { name: "Students", href: "/students", icon: Users },
+  { name: "Classes", href: "/classes", icon: BookOpen },
+  { name: "Assignments", href: "/assignments", icon: Calendar },
+  { name: "Events", href: "/events", icon: Calendar },
+];
+
 const adminNavigation = [
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
-  { name: "Students", href: "/students", icon: UserGroupIcon },
-  { name: "Teachers", href: "/teachers", icon: AcademicCapIcon },
-  { name: "Assignments", href: "/assignments", icon: BookOpenIcon },
-  { name: "Events", href: "/events", icon: CalendarIcon },
-  { name: "Notifications", href: "/notifications", icon: BellIcon },
-  { name: "Settings", href: "/settings", icon: CogIcon },
+  ...mainNavItems,
+  { name: "Teachers", href: "/teachers", icon: GraduationCap },
+  { name: "Notifications", href: "/notifications", icon: Bell },
+  { name: "Settings", href: "/settings", icon: Settings },
 ];
 
 const teacherNavigation = [
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
-  { name: "Students", href: "/students", icon: UserGroupIcon },
-  { name: "Assignments", href: "/assignments", icon: BookOpenIcon },
-  { name: "Events", href: "/events", icon: CalendarIcon },
-  { name: "Notifications", href: "/notifications", icon: BellIcon },
+  ...mainNavItems,
+  { name: "Notifications", href: "/notifications", icon: Bell },
 ];
 
-export function Navigation() {
-  const { userProfile } = useAuth();
+interface NavigationProps {
+  variant?: "mobile" | "desktop";
+}
 
+export function Navigation({ variant = "desktop" }: NavigationProps) {
+  const { currentUser, userProfile, loading } = useAuth();
+
+  // Debug loading state
+  console.log("Navigation Debug - Loading:", loading);
+
+  // Debug auth state
+  console.log("Navigation Debug - Auth:", {
+    currentUser: currentUser?.email,
+    userProfile,
+    role: userProfile?.role,
+    isAdmin: userProfile?.role === "admin",
+    isTeacher: userProfile?.role === "teacher",
+  });
+
+  // Determine which navigation items to show based on variant and user role
+  const isMobileView = variant === "mobile";
   const navigation =
     userProfile?.role === "admin" ? adminNavigation : teacherNavigation;
+  const displayItems = isMobileView ? mainNavItems : navigation;
+
+  // Log navigation state
+  console.log("Navigation Debug - Menu:", {
+    variant,
+    isMobileView,
+    items: displayItems?.map((item) => item.name) || [],
+  });
+
+  // Don't render anything while loading
+  if (loading) {
+    return <div>Loading navigation...</div>;
+  }
+
+  // Don't render if no user profile
+  if (!userProfile) {
+    console.log("Navigation Debug - No user profile");
+    return null;
+  }
 
   return (
-    <>
-      {/* Desktop Navigation */}
-      <nav className="hidden md:flex flex-col space-y-1">
-        {navigation.map((item) => {
-          return (
-            <NavLink
-              key={item.name}
-              to={item.href}
-              className={({ isActive }) =>
-                `flex items-center px-4 py-2 text-sm font-medium rounded-md ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-text-secondary hover:bg-surface-hover"
-                }`
-              }
-            >
-              <item.icon className="mr-3 h-6 w-6" aria-hidden="true" />
-              {item.name}
-            </NavLink>
-          );
-        })}
-      </nav>
+    <nav
+      className={
+        isMobileView ? "flex justify-around" : "flex flex-col space-y-1"
+      }
+    >
+      {displayItems.map((item) => {
+        console.log("Rendering nav item:", item.name); // Debug each item
+        return (
+          <NavLink
+            key={item.name}
+            to={item.href}
+            className={({ isActive }) => {
+              const baseClasses = "flex transition-colors";
+              const mobileClasses = "flex-col items-center justify-center py-2";
+              const desktopClasses =
+                "items-center px-4 py-2.5 text-sm font-medium rounded-lg w-full";
+              const activeClasses = isActive
+                ? "text-primary"
+                : "text-gray-500 hover:text-primary";
+              const desktopActiveClasses = isActive
+                ? "bg-primary/10"
+                : "hover:bg-gray-100/80";
 
-      {/* Mobile Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border">
-        <div className="grid grid-cols-4 gap-1 p-2">
-          {navigation.slice(0, 4).map((item) => {
-            return (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                className={({ isActive }) =>
-                  `flex flex-col items-center px-2 py-1 text-xs font-medium rounded-md ${
-                    isActive
-                      ? "text-primary"
-                      : "text-text-secondary hover:text-primary"
-                  }`
-                }
-              >
-                <item.icon className="h-6 w-6" aria-hidden="true" />
-                <span className="mt-1">{item.name}</span>
-              </NavLink>
-            );
-          })}
-        </div>
-      </nav>
-    </>
+              return `${baseClasses} ${
+                isMobileView
+                  ? `${mobileClasses} ${activeClasses}`
+                  : `${desktopClasses} ${activeClasses} ${desktopActiveClasses}`
+              }`;
+            }}
+          >
+            <item.icon
+              className={isMobileView ? "w-6 h-6 mb-1" : "w-5 h-5 mr-3"}
+              aria-hidden="true"
+            />
+            <span
+              className={isMobileView ? "text-[11px] font-medium" : "text-sm"}
+            >
+              {item.name}
+            </span>
+          </NavLink>
+        );
+      })}
+    </nav>
   );
 }

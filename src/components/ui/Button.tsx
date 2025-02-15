@@ -8,13 +8,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-primary text-white hover:bg-primary-hover focus:ring-primary/20 shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
-        secondary: 'bg-secondary text-white hover:bg-secondary-hover focus:ring-secondary/20 shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
-        accent: 'bg-accent text-white hover:bg-accent-hover focus:ring-accent/20 shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
-        highlight: 'bg-highlight text-white hover:bg-highlight-hover focus:ring-highlight/20 shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
-        outline: 'border-2 border-primary text-primary hover:bg-primary-light focus:ring-primary/20',
-        ghost: 'text-primary hover:bg-primary-light focus:ring-primary/20',
-        danger: 'bg-error text-white hover:bg-error/90 focus:ring-error/20 shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
+        primary: 'bg-[rgb(var(--primary))] text-white hover:bg-[rgb(var(--primary-hover))] focus:ring-[rgb(var(--primary)/0.2)] shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
+        secondary: 'bg-[rgb(var(--secondary))] text-white hover:bg-[rgb(var(--secondary-hover))] focus:ring-[rgb(var(--secondary)/0.2)] shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
+        accent: 'bg-[rgb(var(--accent))] text-white hover:bg-[rgb(var(--accent-hover))] focus:ring-[rgb(var(--accent)/0.2)] shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
+        highlight: 'bg-[rgb(var(--highlight))] text-white hover:bg-[rgb(var(--highlight-hover))] focus:ring-[rgb(var(--highlight)/0.2)] shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
+        outline: 'border-2 border-[rgb(var(--primary))] text-[rgb(var(--primary))] hover:bg-[rgb(var(--primary-light))] focus:ring-[rgb(var(--primary)/0.2)]',
+        ghost: 'text-[rgb(var(--primary))] hover:bg-[rgb(var(--primary-light))] focus:ring-[rgb(var(--primary)/0.2)]',
+        danger: 'bg-[rgb(var(--error))] text-white hover:bg-[rgb(var(--error-hover))] focus:ring-[rgb(var(--error)/0.2)] shadow-md hover:shadow-lg transform hover:-translate-y-0.5',
       },
       size: {
         sm: 'h-8 px-3 text-xs',

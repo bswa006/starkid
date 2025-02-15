@@ -1,4 +1,4 @@
-import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, where, getDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import type { Student } from '@/types/school';
 
@@ -6,6 +6,7 @@ const COLLECTION_NAME = 'students';
 
 export interface StudentService {
   getAll(): Promise<Student[]>;
+  getById(id: string): Promise<Student | null>;
   create(student: Omit<Student, 'id'>): Promise<Student>;
   update(id: string, data: Partial<Omit<Student, 'id'>>): Promise<void>;
   delete(id: string): Promise<void>;
@@ -17,12 +18,13 @@ export const studentService: StudentService = {
   async getAll(): Promise<Student[]> {
     try {
       console.log('Fetching students from collection:', COLLECTION_NAME);
-      console.log('DB instance:', db);
       const studentsRef = collection(db, COLLECTION_NAME);
-      console.log('Collection reference:', studentsRef);
+      
+      // Only fetch active students by default
+      const q = query(studentsRef, where('status', '==', 'active'));
       
       console.log('Executing getDocs query...');
-      const querySnapshot = await getDocs(studentsRef);
+      const querySnapshot = await getDocs(q);
       console.log('Query snapshot:', {
         empty: querySnapshot.empty,
         size: querySnapshot.size,
@@ -32,10 +34,12 @@ export const studentService: StudentService = {
       console.log('Query completed, processing results...');
       const students = querySnapshot.docs.map(doc => {
         const data = doc.data();
-        console.log('Document data:', { id: doc.id, data });
+        // Convert Firestore Timestamps to JavaScript Dates
         return {
           id: doc.id,
-          ...data
+          ...data,
+          createdAt: data.createdAt?.toDate() || new Date(),
+          updatedAt: data.updatedAt?.toDate() || new Date()
         };
       }) as Student[];
       
@@ -55,7 +59,29 @@ export const studentService: StudentService = {
     }
   },
 
-
+  async getById(id: string): Promise<Student | null> {
+    try {
+      console.log('Fetching student by ID:', id);
+      const studentRef = doc(db, COLLECTION_NAME, id);
+      const docSnap = await getDoc(studentRef);
+      
+      if (!docSnap.exists()) {
+        console.log('No student found with ID:', id);
+        return null;
+      }
+      
+      const data = docSnap.data();
+      return {
+        id: docSnap.id,
+        ...data,
+        createdAt: data.createdAt?.toDate() || new Date(),
+        updatedAt: data.updatedAt?.toDate() || new Date()
+      } as Student;
+    } catch (error: any) {
+      console.error('Error in getById:', error);
+      throw new Error('Failed to fetch student: ' + error?.message);
+    }
+  },
 
   async create(student: Omit<Student, 'id'>): Promise<Student> {
     const studentsRef = collection(db, COLLECTION_NAME);
@@ -82,7 +108,11 @@ export const studentService: StudentService = {
       const studentsRef = collection(db, COLLECTION_NAME);
       
       console.log('Building query with teacherId filter...');
-      const q = query(studentsRef, where('teacherId', '==', teacherId));
+      const q = query(
+        studentsRef,
+        where('teacherId', '==', teacherId),
+        where('status', '==', 'active')
+      );
       
       console.log('Executing teacher-specific query...');
       const querySnapshot = await getDocs(q);
@@ -94,10 +124,11 @@ export const studentService: StudentService = {
       
       const students = querySnapshot.docs.map(doc => {
         const data = doc.data();
-        console.log('Teacher student document:', { id: doc.id, data });
         return {
           id: doc.id,
-          ...data
+          ...data,
+          createdAt: data.createdAt?.toDate() || new Date(),
+          updatedAt: data.updatedAt?.toDate() || new Date()
         };
       }) as Student[];
       
@@ -115,12 +146,29 @@ export const studentService: StudentService = {
   },
 
   async getByClass(classId: string): Promise<Student[]> {
-    const studentsRef = collection(db, COLLECTION_NAME);
-    const q = query(studentsRef, where('classId', '==', classId));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    } as Student));
+    try {
+      console.log('Fetching students for class:', classId);
+      const studentsRef = collection(db, COLLECTION_NAME);
+      
+      const q = query(
+        studentsRef,
+        where('classId', '==', classId),
+        where('status', '==', 'active')
+      );
+      
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate() || new Date(),
+          updatedAt: data.updatedAt?.toDate() || new Date()
+        };
+      }) as Student[];
+    } catch (error: any) {
+      console.error('Error in getByClass:', error);
+      throw new Error('Failed to fetch students for class: ' + error?.message);
+    }
   }
 };
