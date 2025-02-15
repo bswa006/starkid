@@ -1,7 +1,6 @@
 # StarKid - Technical Documentation
 
 ## Table of Contents
-
 1. [Project Overview](#project-overview)
 2. [Technology Stack](#technology-stack)
 3. [Project Structure](#project-structure)
@@ -20,7 +19,6 @@
 StarKid is a comprehensive school management system designed to streamline educational institution operations. The application provides features for managing students, classes, attendance, assignments, and administrative tasks.
 
 ### Key Features
-
 - Role-based access control (Admin/Teacher)
 - Student management
 - Class organization
@@ -32,26 +30,24 @@ StarKid is a comprehensive school management system designed to streamline educa
 ## Technology Stack
 
 ### Frontend
-
 - **Framework**: React 19.0.0
 - **Language**: TypeScript
 - **Build Tool**: Vite
-- **Styling**:
+- **Styling**: 
   - TailwindCSS for utility-first styling
   - Radix UI for accessible components
   - Class Variance Authority for component variants
-- **Form Handling**:
+- **Form Handling**: 
   - React Hook Form
   - Zod for schema validation
 - **Routing**: React Router DOM v7
-- **State Management**:
+- **State Management**: 
   - React Context for global state
   - Redux Toolkit for complex state
 - **Date Handling**: date-fns
 - **Icons**: Lucide React
 
 ### Backend
-
 - **Platform**: Firebase
 - **Services**:
   - Firebase Authentication
@@ -61,7 +57,6 @@ StarKid is a comprehensive school management system designed to streamline educa
 - **Offline Support**: Firestore persistence
 
 ### Testing
-
 - **Framework**: Playwright
 - **Pattern**: Page Object Model
 - **Coverage**: E2E and Integration tests
@@ -71,33 +66,33 @@ StarKid is a comprehensive school management system designed to streamline educa
 \`\`\`
 starkid/
 ├── src/
-│ ├── components/ # Reusable UI components
-│ │ ├── attendance/ # Attendance related components
-│ │ ├── auth/ # Authentication components
-│ │ ├── dashboard/ # Dashboard widgets and cards
-│ │ ├── forms/ # Form components
-│ │ ├── layout/ # Layout components
-│ │ ├── navigation/ # Navigation components
-│ │ ├── shared/ # Shared utility components
-│ │ ├── students/ # Student management components
-│ │ └── ui/ # Base UI components
-│ ├── config/ # Configuration files
-│ ├── contexts/ # React contexts
-│ ├── features/ # Redux slices
-│ ├── hooks/ # Custom React hooks
-│ ├── layouts/ # Page layouts
-│ ├── lib/ # Utility libraries
-│ ├── pages/ # Route components
-│ ├── services/ # API and service layer
-│ ├── styles/ # Global styles
-│ ├── types/ # TypeScript types
-│ └── utils/ # Utility functions
-├── tests/ # Test files
-│ ├── pages/ # Page object models
-│ ├── setup/ # Test configuration
-│ ├── specs/ # Test specifications
-│ └── utils/ # Test utilities
-└── public/ # Static assets
+│   ├── components/           # Reusable UI components
+│   │   ├── attendance/      # Attendance related components
+│   │   ├── auth/           # Authentication components
+│   │   ├── dashboard/      # Dashboard widgets and cards
+│   │   ├── forms/         # Form components
+│   │   ├── layout/        # Layout components
+│   │   ├── navigation/    # Navigation components
+│   │   ├── shared/        # Shared utility components
+│   │   ├── students/      # Student management components
+│   │   └── ui/           # Base UI components
+│   ├── config/            # Configuration files
+│   ├── contexts/          # React contexts
+│   ├── features/          # Redux slices
+│   ├── hooks/            # Custom React hooks
+│   ├── layouts/          # Page layouts
+│   ├── lib/              # Utility libraries
+│   ├── pages/            # Route components
+│   ├── services/         # API and service layer
+│   ├── styles/           # Global styles
+│   ├── types/            # TypeScript types
+│   └── utils/            # Utility functions
+├── tests/                # Test files
+│   ├── pages/           # Page object models
+│   ├── setup/           # Test configuration
+│   ├── specs/           # Test specifications
+│   └── utils/           # Test utilities
+└── public/              # Static assets
 \`\`\`
 
 ## Architecture
@@ -105,9 +100,7 @@ starkid/
 ### Component Architecture
 
 #### 1. UI Components (src/components/ui)
-
 Base components following atomic design principles:
-
 - Atoms: Button, Input, Select, etc.
 - Molecules: Forms, Cards, Modals
 - Organisms: Navigation, DataList, etc.
@@ -115,43 +108,40 @@ Base components following atomic design principles:
 Example Button component:
 \`\`\`typescript
 interface ButtonProps {
-variant?: 'primary' | 'secondary' | 'outline';
-size?: 'sm' | 'md' | 'lg';
-children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  children: React.ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
-variant = 'primary',
-size = 'md',
-children,
-...props
+  variant = 'primary',
+  size = 'md',
+  children,
+  ...props
 }) => {
-return (
-<button
-className={cn(
-buttonVariants({ variant, size }),
-props.className
-)}
-{...props} >
-{children}
-</button>
-);
+  return (
+    <button
+      className={cn(
+        buttonVariants({ variant, size }),
+        props.className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
 };
 \`\`\`
 
 #### 2. Feature Components
-
 Organized by domain:
-
 - Dashboard components
 - Student management
 - Attendance tracking
 - Assignment management
 
 #### 3. Layout Components
-
 Handle page structure:
-
 - MainLayout
 - Navigation
 - Sidebar
@@ -159,13 +149,11 @@ Handle page structure:
 ### Data Flow
 
 1. **Service Layer**
-
    - API calls to Firebase
    - Data transformation
    - Error handling
 
 2. **State Management**
-
    - Context for global state
    - Local state for component-specific data
    - Redux for complex state interactions
@@ -180,7 +168,6 @@ Handle page structure:
 ### UI Components
 
 #### Base Components
-
 - Button
 - Input
 - Select
@@ -191,14 +178,12 @@ Handle page structure:
 - Progress
 
 #### Form Components
-
 - Form validation with Zod
 - Error handling
 - Async submission
 - File uploads
 
 #### Data Display
-
 - Tables
 - Lists
 - Cards
@@ -207,21 +192,18 @@ Handle page structure:
 ### Page Components
 
 #### Dashboard
-
 - Statistics overview
 - Recent activities
 - Quick actions
 - Performance metrics
 
 #### Student Management
-
 - Student listing
 - Profile management
 - Academic records
 - Parent information
 
 #### Class Management
-
 - Class creation
 - Student assignment
 - Schedule management
@@ -230,89 +212,83 @@ Handle page structure:
 ## State Management
 
 ### Authentication Context
-
 \`\`\`typescript
 interface AuthContextType {
-currentUser: User | null;
-userProfile: UserProfile | null;
-loading: boolean;
-login: (email: string, password: string) => Promise<void>;
-logout: () => Promise<void>;
+  currentUser: User | null;
+  userProfile: UserProfile | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 \`\`\`
 
 ### Data Models
 
 #### User Profile
-
 \`\`\`typescript
 interface UserProfile {
-id: string;
-role: 'admin' | 'teacher';
-name: string;
-email: string;
-department?: string;
-subjects?: string[];
+  id: string;
+  role: 'admin' | 'teacher';
+  name: string;
+  email: string;
+  department?: string;
+  subjects?: string[];
 }
 \`\`\`
 
 #### Student
-
 \`\`\`typescript
 interface Student {
-id: string;
-firstName: string;
-lastName: string;
-rollNumber: string;
-grade: string;
-section: string;
-parentInfo: {
-name: string;
-contact: string;
-email: string;
-};
+  id: string;
+  firstName: string;
+  lastName: string;
+  rollNumber: string;
+  grade: string;
+  section: string;
+  parentInfo: {
+    name: string;
+    contact: string;
+    email: string;
+  };
 }
 \`\`\`
 
 ## Testing
 
 ### E2E Tests
-
 Using Playwright with Page Object Model:
 
 \`\`\`typescript
 test.describe('Authentication', () => {
-test('should login successfully', async ({ page, loginPage }) => {
-await loginPage.goto();
-await loginPage.login('user@example.com', 'password');
-await expect(page).toHaveURL(/.\*\/dashboard/);
-});
+  test('should login successfully', async ({ page, loginPage }) => {
+    await loginPage.goto();
+    await loginPage.login('user@example.com', 'password');
+    await expect(page).toHaveURL(/.*\/dashboard/);
+  });
 });
 \`\`\`
 
 ### Page Objects
-
 \`\`\`typescript
 class LoginPage {
-constructor(page: Page) {
-this.page = page;
-this.emailInput = page.locator('input[type="email"]');
-this.passwordInput = page.locator('input[type="password"]');
-this.loginButton = page.locator('button[type="submit"]');
-}
+  constructor(page: Page) {
+    this.page = page;
+    this.emailInput = page.locator('input[type="email"]');
+    this.passwordInput = page.locator('input[type="password"]');
+    this.loginButton = page.locator('button[type="submit"]');
+  }
 
-async login(email: string, password: string) {
-await this.emailInput.fill(email);
-await this.passwordInput.fill(password);
-await this.loginButton.click();
-}
+  async login(email: string, password: string) {
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+    await this.loginButton.click();
+  }
 }
 \`\`\`
 
 ## Development Guidelines
 
 ### Code Style
-
 - Use TypeScript strict mode
 - Follow ESLint configuration
 - Use Prettier for formatting
@@ -320,7 +296,6 @@ await this.loginButton.click();
 - Use descriptive variable names
 
 ### Component Guidelines
-
 1. Keep components focused and single-responsibility
 2. Use TypeScript interfaces for props
 3. Implement error boundaries
@@ -328,7 +303,6 @@ await this.loginButton.click();
 5. Follow accessibility guidelines
 
 ### State Management Rules
-
 1. Use local state for UI-only state
 2. Use context for shared state
 3. Implement proper error handling
@@ -336,7 +310,6 @@ await this.loginButton.click();
 5. Use proper TypeScript types
 
 ### Testing Requirements
-
 1. Write tests for critical paths
 2. Use meaningful test descriptions
 3. Implement proper test cleanup
@@ -346,19 +319,16 @@ await this.loginButton.click();
 ## Performance Considerations
 
 ### Code Splitting
-
 - Route-based splitting
 - Component lazy loading
 - Dynamic imports for large libraries
 
 ### Caching Strategy
-
 - Firebase offline persistence
 - Browser storage utilization
 - State persistence where needed
 
 ### Optimization Techniques
-
 1. Image optimization
 2. Code minification
 3. Tree shaking
@@ -368,14 +338,12 @@ await this.loginButton.click();
 ## Security
 
 ### Authentication
-
 - Firebase Authentication
 - Protected routes
 - Role-based access
 - Session management
 
 ### Data Security
-
 - Firestore security rules
 - Input validation
 - XSS prevention
@@ -384,32 +352,24 @@ await this.loginButton.click();
 ## Deployment
 
 ### Build Process
-
 \`\`\`bash
-
 # Install dependencies
-
 npm install
 
 # Development
-
 npm run dev
 
 # Production build
-
 npm run build
 
 # Preview build
-
 npm run preview
 
 # Run tests
-
 npm run test
 \`\`\`
 
 ### Environment Variables
-
 Required environment variables:
 \`\`\`
 VITE_FIREBASE_API_KEY=
@@ -423,21 +383,18 @@ VITE_FIREBASE_APP_ID=
 ## Maintenance
 
 ### Updating Dependencies
-
 - Regular security updates
 - Compatibility checking
 - Breaking changes review
 - Update documentation
 
 ### Monitoring
-
 - Error tracking
 - Performance monitoring
 - Usage analytics
 - User feedback
 
 ### Backup Strategy
-
 - Database backups
 - Code repository
 - Configuration backups
@@ -446,7 +403,6 @@ VITE_FIREBASE_APP_ID=
 ## Future Considerations
 
 ### Planned Features
-
 1. Real-time notifications
 2. Advanced reporting
 3. Mobile application
@@ -454,7 +410,6 @@ VITE_FIREBASE_APP_ID=
 5. Multi-language support
 
 ### Technical Debt
-
 1. Test coverage improvement
 2. Performance optimization
 3. Accessibility compliance
@@ -462,7 +417,6 @@ VITE_FIREBASE_APP_ID=
 5. Code refactoring
 
 ### Scalability
-
 1. Database optimization
 2. Caching improvements
 3. Load balancing
@@ -472,14 +426,12 @@ VITE_FIREBASE_APP_ID=
 ## Contributing
 
 ### Getting Started
-
 1. Clone the repository
 2. Install dependencies
 3. Set up environment variables
 4. Run development server
 
 ### Pull Request Process
-
 1. Branch naming convention
 2. Code review requirements
 3. Testing requirements
